@@ -5,8 +5,23 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { ApolloServerPluginLandingPageGraphQLPlayground as ApolloServerGraphQLPlayground } from "apollo-server-core";
 import TodoResolver from "./resolvers/todo.resolver";
+import { createConnection } from "typeorm";
+import { _production } from "./const";
+import TodoEntity from "./entities/todo.entity";
 
 const main = async () => {
+    await createConnection({
+        type: "mysql",
+        host: process.env.DB_HOST || "localhost",
+        port: 3306,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        entities: [TodoEntity],
+        logging: !_production,
+        synchronize: true,
+    });
+
     const PORT = process.env.PORT;
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
