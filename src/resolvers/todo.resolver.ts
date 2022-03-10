@@ -19,13 +19,7 @@ export default class TodoResolver {
     }
 
     @Mutation(() => Boolean, { nullable: true })
-    deleteTodo(@Arg("id", () => Int) id: number): boolean | undefined {
-        const todo = TodoEntity.findOne({ id });
-
-        if (!todo) {
-            return undefined;
-        }
-
+    deleteTodo(@Arg("id", () => Int) id: number): boolean {
         try {
             TodoEntity.delete({ id });
 
@@ -40,13 +34,7 @@ export default class TodoResolver {
         @Arg("id", () => Int) id: number,
         @Arg("text", () => String) text: string,
         @Arg("complete", { defaultValue: false }) complete: boolean
-    ): boolean | undefined {
-        const todo = TodoEntity.findOne({ id: id });
-
-        if (!todo) {
-            return undefined;
-        }
-
+    ): boolean {
         try {
             TodoEntity.update({ id }, { text, complete });
 
