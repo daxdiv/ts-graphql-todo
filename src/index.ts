@@ -20,6 +20,7 @@ const main = async () => {
         entities: [TodoEntity],
         logging: !_production,
         synchronize: true,
+        // dropSchema: true,
     });
 
     const PORT = process.env.PORT;
