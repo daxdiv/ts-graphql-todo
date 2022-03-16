@@ -5,3 +5,11 @@ export interface ITodo {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface AllTodosData {
+    allTodos: ITodo[];
+}
+
+export interface CreateTodoVars {
+    text: string;
+}
