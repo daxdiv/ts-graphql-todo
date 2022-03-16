@@ -1,11 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { BsCheckLg, BsFillTrashFill } from "react-icons/bs";
 import DELETE_MUT from "../mutations/delete.mutation";
+import ALL_TODOS_QUERY from "../queries/allTodos.query";
 import { DeleteTodoVars, ITodo } from "../utils/types";
 
 const Todo = ({ id, text }: ITodo) => {
     const [deleteTodoMut] = useMutation<{}, DeleteTodoVars>(DELETE_MUT, {
         variables: { id },
+        refetchQueries: [{ query: ALL_TODOS_QUERY }],
     });
 
     const handleDelete = async () => {

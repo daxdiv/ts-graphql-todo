@@ -11,6 +11,7 @@ const App = () => {
     const { data, error, loading } = useQuery<AllTodosData>(ALL_TODOS_QUERY);
     const [createTodoMut] = useMutation<ITodo, CreateTodoVars>(CREATE_MUT, {
         variables: { text: todoText },
+        refetchQueries: [{ query: ALL_TODOS_QUERY }],
     });
 
     if (error) return <div>Error</div>;
