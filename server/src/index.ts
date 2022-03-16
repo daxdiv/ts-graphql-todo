@@ -8,6 +8,7 @@ import TodoResolver from "./resolvers/todo.resolver";
 import { createConnection } from "typeorm";
 import { _production } from "./const";
 import TodoEntity from "./entities/todo.entity";
+import cors from "cors";
 
 const main = async () => {
     await createConnection({
@@ -37,6 +38,12 @@ const main = async () => {
 
     apolloServer.applyMiddleware({ app });
 
+    app.use(
+        cors({
+            credentials: true,
+            origin: ["http://localhost:3000"],
+        })
+    );
     app.get("/", (_req: Request, res: Response) => {
         res.status(200).send("hello, world");
     });
