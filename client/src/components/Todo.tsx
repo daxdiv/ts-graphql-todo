@@ -1,14 +1,19 @@
 import { BsCheckLg, BsFillTrashFill, BsPlusLg } from "react-icons/bs";
 
-const Todo = () => {
+interface ITodo {
+    id: number;
+    text: string;
+}
+
+const Todo = ({ id, text }: ITodo) => {
     return (
         <div className="flex justify-between items-center p-2">
-            <div className="bg-blue-400 rounded-lg p-1 mb-1 last:-mb-1 w-3/4">
-                test todo
+            <div className="bg-blue-600 text-white font-bold rounded-lg p-2 mb-1 last:-mb-1 w-3/4 hover:scale-105 transition hover:ring-white hover:ring-1">
+                {text}
             </div>
             <div className="grid grid-cols-2 gap-3">
-                <BsCheckLg className="cursor-pointer"></BsCheckLg>
-                <BsFillTrashFill className="cursor-pointer"></BsFillTrashFill>
+                <BsCheckLg className="cursor-pointer text-white"></BsCheckLg>
+                <BsFillTrashFill className="cursor-pointer text-white"></BsFillTrashFill>
             </div>
         </div>
     );
