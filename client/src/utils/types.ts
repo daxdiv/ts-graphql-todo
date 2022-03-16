@@ -13,3 +13,7 @@ export interface AllTodosData {
 export interface CreateTodoVars {
     text: string;
 }
+
+export interface DeleteTodoVars {
+    id: number;
+}
