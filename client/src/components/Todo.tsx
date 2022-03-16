@@ -1,9 +1,5 @@
 import { BsCheckLg, BsFillTrashFill, BsPlusLg } from "react-icons/bs";
-
-interface ITodo {
-    id: number;
-    text: string;
-}
+import { ITodo } from "../utils/types";
 
 const Todo = ({ id, text }: ITodo) => {
     return (
