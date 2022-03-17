@@ -4,19 +4,31 @@ import { BsFillTrashFill, BsPlusLg } from "react-icons/bs";
 import Todo from "./components/Todo";
 import CREATE_MUT from "./mutations/create.mutation";
 import ALL_TODOS_QUERY from "./queries/allTodos.query";
-import { ITodo, AllTodosData, CreateTodoVars } from "./utils/types";
+import COMPLETED_TODOS_QUERY from "./queries/completedTodos.query";
+import { ITodo, AllTodosData, CreateTodoVars, CompletedTodosData } from "./utils/types";
 
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
     const { data, error, loading } = useQuery<AllTodosData>(ALL_TODOS_QUERY);
+    const {
+        data: dataCompletedTodos,
+        error: errorCompletedTodos,
+        loading: loadingCompletedTodos,
+    } = useQuery<CompletedTodosData>(COMPLETED_TODOS_QUERY, {
+        variables: { complete: true },
+    });
     const [createTodoMut] = useMutation<ITodo, CreateTodoVars>(CREATE_MUT, {
         variables: { text: todoText },
         refetchQueries: [{ query: ALL_TODOS_QUERY }],
     });
 
-    if (error) return <div>Error</div>;
-    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading todos</div>;
+    if (loading) return <div>Loading todos...</div>;
     if (!data) return <div>Todos not found</div>;
+
+    if (errorCompletedTodos) return <div>Error loading completed todos</div>;
+    if (loadingCompletedTodos) return <div>Loading completed todos...</div>;
+    if (!dataCompletedTodos) return <div>Completed Todos not found</div>;
 
     const handleCreate = async () => {
         if (!todoText) return;
@@ -52,6 +64,10 @@ const App = () => {
                 </div>
                 <div className="mt-4">
                     {data.allTodos.map((todo: ITodo) => {
+                        return <Todo key={todo.id} {...todo} />;
+                    })}
+                    <div className="w-full my-2 border-t-2 border-t-white px-2"></div>
+                    {dataCompletedTodos?.completedTodos.map((todo: ITodo) => {
                         return <Todo key={todo.id} {...todo} />;
                     })}
                 </div>

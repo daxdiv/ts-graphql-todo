@@ -10,6 +10,10 @@ export interface AllTodosData {
     allTodos: ITodo[];
 }
 
+export interface CompletedTodosData {
+    completedTodos: ITodo[];
+}
+
 export interface CreateTodoVars {
     text: string;
 }
