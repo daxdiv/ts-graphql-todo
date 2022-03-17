@@ -13,6 +13,17 @@ export default class TodoResolver {
         return TodoEntity.find({});
     }
 
+    @Query(() => [TodoEntity], { nullable: true })
+    completedTodos(
+        @Arg("complete", () => Boolean) complete: boolean = true
+    ): Promise<TodoEntity[]> {
+        return TodoEntity.find({
+            where: {
+                complete,
+            },
+        });
+    }
+
     @Mutation(() => TodoEntity)
     createTodo(@Arg("text", () => String) text: string): Promise<TodoEntity> {
         return TodoEntity.create({ text, complete: false }).save();
