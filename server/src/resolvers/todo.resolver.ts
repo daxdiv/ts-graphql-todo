@@ -41,12 +41,9 @@ export default class TodoResolver {
     }
 
     @Mutation(() => Boolean, { nullable: true })
-    updateTodo(
-        @Arg("id", () => Int) id: number,
-        @Arg("complete", { defaultValue: false }) complete: boolean
-    ): boolean {
+    updateTodo(@Arg("id", () => Int) id: number): boolean {
         try {
-            TodoEntity.update({ id }, { complete });
+            TodoEntity.update({ id }, { complete: true });
 
             return true;
         } catch {
