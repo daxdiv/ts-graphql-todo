@@ -52,7 +52,7 @@ const App = () => {
                 </div>
                 <div className="mt-4">
                     {data.allTodos.map((todo: ITodo) => {
-                        return <Todo key={todo.id} id={todo.id} text={todo.text} />;
+                        return <Todo key={todo.id} {...todo} />;
                     })}
                 </div>
             </div>

@@ -17,3 +17,8 @@ export interface CreateTodoVars {
 export interface DeleteTodoVars {
     id: number;
 }
+
+export interface UpdateTodoVars {
+    id: number;
+    complete: boolean | undefined;
+}
