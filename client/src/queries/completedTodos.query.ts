@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const COMPLETED_TODOS_QUERY = gql`
-    query CompletedTodos($complete: Boolean!) {
-        completedTodos(complete: $complete) {
+    query CompletedTodos {
+        completedTodos {
             id
             text
             complete

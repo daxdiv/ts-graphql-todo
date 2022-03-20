@@ -18,11 +18,6 @@ export interface CreateTodoVars {
     text: string;
 }
 
-export interface DeleteTodoVars {
+export interface ModifyTodoVars {
     id: number;
-}
-
-export interface UpdateTodoVars {
-    id: number;
-    complete: boolean | undefined;
 }

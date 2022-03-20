@@ -4,15 +4,15 @@ import DELETE_MUT from "../mutations/delete.mutation";
 import UPDATE_MUT from "../mutations/update.mutation";
 import ALL_TODOS_QUERY from "../queries/allTodos.query";
 import COMPLETED_TODOS_QUERY from "../queries/completedTodos.query";
-import { DeleteTodoVars, ITodo, UpdateTodoVars } from "../utils/types";
+import { ModifyTodoVars, ITodo } from "../utils/types";
 
-const Todo = ({ id, text, complete }: ITodo) => {
-    const [deleteTodoMut] = useMutation<{}, DeleteTodoVars>(DELETE_MUT, {
+const Todo = ({ id, text }: ITodo) => {
+    const [deleteTodoMut] = useMutation<{}, ModifyTodoVars>(DELETE_MUT, {
         variables: { id },
         refetchQueries: [{ query: ALL_TODOS_QUERY }],
     });
-    const [updateTodoMut] = useMutation<{}, UpdateTodoVars>(UPDATE_MUT, {
-        variables: { id, complete },
+    const [updateTodoMut] = useMutation<{}, ModifyTodoVars>(UPDATE_MUT, {
+        variables: { id },
         refetchQueries: [{ query: COMPLETED_TODOS_QUERY }],
     });
 
