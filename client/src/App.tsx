@@ -14,9 +14,7 @@ const App = () => {
         data: dataCompletedTodos,
         error: errorCompletedTodos,
         loading: loadingCompletedTodos,
-    } = useQuery<CompletedTodosData>(COMPLETED_TODOS_QUERY, {
-        variables: { complete: true },
-    });
+    } = useQuery<CompletedTodosData>(COMPLETED_TODOS_QUERY);
     const [createTodoMut] = useMutation<ITodo, CreateTodoVars>(CREATE_MUT, {
         variables: { text: todoText },
         refetchQueries: [{ query: ALL_TODOS_QUERY }],

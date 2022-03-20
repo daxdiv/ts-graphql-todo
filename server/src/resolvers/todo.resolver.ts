@@ -14,12 +14,10 @@ export default class TodoResolver {
     }
 
     @Query(() => [TodoEntity], { nullable: true })
-    completedTodos(
-        @Arg("complete", () => Boolean) complete: boolean = true
-    ): Promise<TodoEntity[]> {
+    completedTodos(): Promise<TodoEntity[]> {
         return TodoEntity.find({
             where: {
-                complete,
+                complete: true,
             },
         });
     }
