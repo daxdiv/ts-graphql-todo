@@ -13,7 +13,7 @@ const Todo = ({ id, text }: ITodo) => {
     });
     const [updateTodoMut] = useMutation<{}, ModifyTodoVars>(UPDATE_MUT, {
         variables: { id },
-        refetchQueries: [{ query: COMPLETED_TODOS_QUERY }],
+        refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
     });
 
     const handleDelete = async () => {

@@ -8,9 +8,9 @@ export default class TodoResolver {
         return TodoEntity.findOne({ id });
     }
 
-    @Query(() => [TodoEntity])
+    @Query(() => [TodoEntity], { nullable: true })
     allTodos(): Promise<TodoEntity[]> {
-        return TodoEntity.find({});
+        return TodoEntity.find({ where: { complete: false } });
     }
 
     @Query(() => [TodoEntity], { nullable: true })
