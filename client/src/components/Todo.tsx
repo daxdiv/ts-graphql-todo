@@ -9,7 +9,7 @@ import { ModifyTodoVars, ITodo } from "../utils/types";
 const Todo = ({ id, text }: ITodo) => {
     const [deleteTodoMut] = useMutation<{}, ModifyTodoVars>(DELETE_MUT, {
         variables: { id },
-        refetchQueries: [{ query: ALL_TODOS_QUERY }],
+        refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
     });
     const [updateTodoMut] = useMutation<{}, ModifyTodoVars>(UPDATE_MUT, {
         variables: { id },
