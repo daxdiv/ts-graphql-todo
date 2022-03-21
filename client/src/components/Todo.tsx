@@ -1,18 +1,19 @@
 import { useMutation } from "@apollo/client";
 import { BsCheckLg, BsFillTrashFill } from "react-icons/bs";
+import { FaUndoAlt } from "react-icons/fa";
 import DELETE_MUT from "../mutations/delete.mutation";
 import UPDATE_MUT from "../mutations/update.mutation";
 import ALL_TODOS_QUERY from "../queries/allTodos.query";
 import COMPLETED_TODOS_QUERY from "../queries/completedTodos.query";
-import { ModifyTodoVars, ITodo } from "../utils/types";
+import { DeleteTodoVars, ITodo, UpdateTodoVars } from "../utils/types";
 
 const Todo = ({ id, text, complete }: ITodo) => {
-    const [deleteTodoMut] = useMutation<{}, ModifyTodoVars>(DELETE_MUT, {
+    const [deleteTodoMut] = useMutation<{}, DeleteTodoVars>(DELETE_MUT, {
         variables: { id },
         refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
     });
-    const [updateTodoMut] = useMutation<{}, ModifyTodoVars>(UPDATE_MUT, {
-        variables: { id },
+    const [updateTodoMut] = useMutation<{}, UpdateTodoVars>(UPDATE_MUT, {
+        variables: { id, complete },
         refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
     });
 
@@ -33,10 +34,18 @@ const Todo = ({ id, text, complete }: ITodo) => {
                 {text}
             </div>
             <div className="grid grid-cols-2 gap-3">
-                <BsCheckLg
-                    className="cursor-pointer text-white"
-                    onClick={handleUpdate}
-                ></BsCheckLg>
+                {!complete && (
+                    <BsCheckLg
+                        className="cursor-pointer text-white"
+                        onClick={handleUpdate}
+                    ></BsCheckLg>
+                )}
+                {complete && (
+                    <FaUndoAlt
+                        className="cursor-pointer text-white"
+                        onClick={handleUpdate}
+                    ></FaUndoAlt>
+                )}
                 <BsFillTrashFill
                     className="cursor-pointer text-white"
                     onClick={handleDelete}

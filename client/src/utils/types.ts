@@ -20,8 +20,13 @@ export interface CreateTodoVars {
     text: string;
 }
 
-export interface ModifyTodoVars {
+export interface DeleteTodoVars {
     id: number;
+}
+
+export interface UpdateTodoVars {
+    id: number;
+    complete: boolean | undefined;
 }
 
 export interface UseQueriesResultLoading {

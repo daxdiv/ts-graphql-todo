@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import { BsFillTrashFill, BsPlusLg } from "react-icons/bs";
+import { BsPlusLg, BsTrashFill } from "react-icons/bs";
+import { FaUndoAlt } from "react-icons/fa";
 import Todo from "./components/Todo";
 import CREATE_MUT from "./mutations/create.mutation";
 import ALL_TODOS_QUERY from "./queries/allTodos.query";
@@ -64,12 +65,12 @@ const App = () => {
                             className="cursor-pointer text-white"
                             onClick={handleCreate}
                         ></BsPlusLg>
-                        <BsFillTrashFill
+                        <BsTrashFill
                             className="cursor-pointer text-white"
                             onClick={() => {
                                 setTodoText("");
                             }}
-                        ></BsFillTrashFill>
+                        ></BsTrashFill>
                     </div>
                 </div>
                 <div className="mt-4">
