@@ -1,32 +1,44 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { BsFillTrashFill, BsPlusLg } from "react-icons/bs";
 import Todo from "./components/Todo";
 import CREATE_MUT from "./mutations/create.mutation";
 import ALL_TODOS_QUERY from "./queries/allTodos.query";
 import COMPLETED_TODOS_QUERY from "./queries/completedTodos.query";
+import useQueries from "./hooks/useQueries";
 import { ITodo, AllTodosData, CreateTodoVars, CompletedTodosData } from "./utils/types";
 
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
-    const { data, error, loading } = useQuery<AllTodosData>(ALL_TODOS_QUERY);
-    const {
-        data: dataCompletedTodos,
-        error: errorCompletedTodos,
-        loading: loadingCompletedTodos,
-    } = useQuery<CompletedTodosData>(COMPLETED_TODOS_QUERY);
+    const [
+        { data: todosData, error: todosError, loading: todosLoading },
+        {
+            data: completedTodosData,
+            error: completedTodosError,
+            loading: completedTodosLoading,
+        },
+    ] = useQueries<AllTodosData & CompletedTodosData>(
+        {
+            type: ALL_TODOS_QUERY,
+            errorMessage: "Error loading todos",
+            loadingMessage: "Loading todos...",
+        },
+        {
+            type: COMPLETED_TODOS_QUERY,
+            errorMessage: "Error loading completed todos",
+            loadingMessage: "Loading completed todos...",
+        }
+    );
     const [createTodoMut] = useMutation<ITodo, CreateTodoVars>(CREATE_MUT, {
         variables: { text: todoText },
         refetchQueries: [{ query: ALL_TODOS_QUERY }],
     });
 
-    if (error) return <div>Error loading todos</div>;
-    if (loading) return <div>Loading todos...</div>;
-    if (!data) return <div>Todos not found</div>;
-
-    if (errorCompletedTodos) return <div>Error loading completed todos</div>;
-    if (loadingCompletedTodos) return <div>Loading completed todos...</div>;
-    if (!dataCompletedTodos) return <div>Completed Todos not found</div>;
+    if (todosError.info) return <div>{todosError.message}</div>;
+    if (completedTodosError.info) return <div>{completedTodosError.message}</div>;
+    if (todosLoading.state) return <div>{todosLoading.message}</div>;
+    if (completedTodosLoading.state) return <div>{completedTodosLoading.message}</div>;
+    if (!todosData || !completedTodosData) return <div>Nothing found</div>;
 
     const handleCreate = async () => {
         if (!todoText) return;
@@ -61,11 +73,11 @@ const App = () => {
                     </div>
                 </div>
                 <div className="mt-4">
-                    {data.allTodos.map((todo: ITodo) => {
+                    {todosData.allTodos.map((todo: ITodo) => {
                         return <Todo key={todo.id} {...todo} />;
                     })}
                     <div className="w-full my-2 border-t-2 border-t-white px-2"></div>
-                    {dataCompletedTodos?.completedTodos.map((todo: ITodo) => {
+                    {completedTodosData.completedTodos.map((todo: ITodo) => {
                         return <Todo key={todo.id} {...todo} />;
                     })}
                 </div>
