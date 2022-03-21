@@ -6,7 +6,7 @@ import ALL_TODOS_QUERY from "../queries/allTodos.query";
 import COMPLETED_TODOS_QUERY from "../queries/completedTodos.query";
 import { ModifyTodoVars, ITodo } from "../utils/types";
 
-const Todo = ({ id, text }: ITodo) => {
+const Todo = ({ id, text, complete }: ITodo) => {
     const [deleteTodoMut] = useMutation<{}, ModifyTodoVars>(DELETE_MUT, {
         variables: { id },
         refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
@@ -25,7 +25,11 @@ const Todo = ({ id, text }: ITodo) => {
 
     return (
         <div className="flex justify-between items-center p-2">
-            <div className="bg-blue-600 text-white font-bold rounded-lg p-2 mb-1 last:-mb-1 w-3/4 hover:scale-105 transition hover:ring-white hover:ring-1">
+            <div
+                className={`bg-blue-600 text-white font-bold rounded-lg p-2 mb-1 last:-mb-1 w-3/4 hover:scale-105 transition hover:ring-white hover:ring-1 ${
+                    complete ? "line-through font-normal" : ""
+                }`}
+            >
                 {text}
             </div>
             <div className="grid grid-cols-2 gap-3">

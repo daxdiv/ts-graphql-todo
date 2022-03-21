@@ -76,7 +76,9 @@ const App = () => {
                     {todosData.allTodos.map((todo: ITodo) => {
                         return <Todo key={todo.id} {...todo} />;
                     })}
-                    <div className="w-full my-2 border-t-2 border-t-white px-2"></div>
+                    {completedTodosData.completedTodos.length !== 0 && (
+                        <div className="w-full my-2 border-t-2 border-t-white px-2"></div>
+                    )}
                     {completedTodosData.completedTodos.map((todo: ITodo) => {
                         return <Todo key={todo.id} {...todo} />;
                     })}
