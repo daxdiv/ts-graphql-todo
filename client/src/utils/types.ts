@@ -8,44 +8,44 @@ export interface ITodo {
     updatedAt?: Date;
 }
 
-export interface AllTodosData {
+export interface IAllTodosData {
     allTodos: ITodo[];
 }
 
-export interface CompletedTodosData {
+export interface ICompletedTodosData {
     completedTodos: ITodo[];
 }
 
-export interface CreateTodoVars {
+export interface ICreateTodoVars {
     text: string;
 }
 
-export interface DeleteTodoVars {
+export interface IDeleteTodoVars {
     id: number;
 }
 
-export interface UpdateTodoVars {
+export interface IUpdateTodoVars {
     id: number;
     complete: boolean | undefined;
 }
 
-export interface UseQueriesResultLoading {
+export interface IUseQueriesResultLoading {
     state: boolean;
     message: string;
 }
 
-export interface UseQueriesResultError {
+export interface IUseQueriesResultError {
     info: ApolloError | undefined;
     message: string;
 }
 
-export interface UseQueriesResult<T> {
+export interface IUseQueriesResult<T> {
     data: T | undefined;
-    error: UseQueriesResultError;
-    loading: UseQueriesResultLoading;
+    error: IUseQueriesResultError;
+    loading: IUseQueriesResultLoading;
 }
 
-export interface UseQueriesParams {
+export interface IUseQueriesParams {
     type: DocumentNode;
     errorMessage?: string | undefined;
     loadingMessage?: string | undefined;

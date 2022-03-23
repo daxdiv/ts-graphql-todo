@@ -1,13 +1,17 @@
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { BsPlusLg, BsTrashFill } from "react-icons/bs";
-import { FaUndoAlt } from "react-icons/fa";
 import Todo from "./components/Todo";
 import CREATE_MUT from "./mutations/create.mutation";
 import ALL_TODOS_QUERY from "./queries/allTodos.query";
 import COMPLETED_TODOS_QUERY from "./queries/completedTodos.query";
 import useQueries from "./hooks/useQueries";
-import { ITodo, AllTodosData, CreateTodoVars, CompletedTodosData } from "./utils/types";
+import {
+    ITodo,
+    IAllTodosData,
+    ICreateTodoVars,
+    ICompletedTodosData,
+} from "./utils/types";
 
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
@@ -18,7 +22,7 @@ const App = () => {
             error: completedTodosError,
             loading: completedTodosLoading,
         },
-    ] = useQueries<AllTodosData & CompletedTodosData>(
+    ] = useQueries<IAllTodosData & ICompletedTodosData>(
         {
             type: ALL_TODOS_QUERY,
             errorMessage: "Error loading todos",
@@ -30,7 +34,7 @@ const App = () => {
             loadingMessage: "Loading completed todos...",
         }
     );
-    const [createTodoMut] = useMutation<ITodo, CreateTodoVars>(CREATE_MUT, {
+    const [createTodoMut] = useMutation<ITodo, ICreateTodoVars>(CREATE_MUT, {
         variables: { text: todoText },
         refetchQueries: [{ query: ALL_TODOS_QUERY }],
     });
