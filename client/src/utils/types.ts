@@ -29,12 +29,12 @@ export interface IUpdateTodoVars {
     complete: boolean | undefined;
 }
 
-export interface IUseQueriesResultLoading {
+interface IUseQueriesResultLoading {
     state: boolean;
     message: string;
 }
 
-export interface IUseQueriesResultError {
+interface IUseQueriesResultError {
     info: ApolloError | undefined;
     message: string;
 }
@@ -49,4 +49,11 @@ export interface IUseQueriesParams {
     type: DocumentNode;
     errorMessage?: string | undefined;
     loadingMessage?: string | undefined;
+}
+
+export type TPopupVariant = "success" | "error";
+
+export interface IPopup {
+    text: string;
+    variant: TPopupVariant;
 }

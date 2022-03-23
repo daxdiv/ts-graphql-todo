@@ -11,6 +11,7 @@ import {
     IAllTodosData,
     ICreateTodoVars,
     ICompletedTodosData,
+    TPopupVariant,
 } from "./utils/types";
 import Popup from "./components/Popup";
 import PopupContext from "./utils/contexts";
@@ -18,7 +19,8 @@ import PopupContext from "./utils/contexts";
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
     const [popupVis, setPopupVis] = useState<boolean>(false);
-    const togglePopupVis = () => setPopupVis(v => !v);
+    const [popupText, setPopuptext] = useState<string>("");
+    const [popupVariant, setPopupVariant] = useState<TPopupVariant>("error");
     const [
         { data: todosData, error: todosError, loading: todosLoading },
         {
@@ -49,15 +51,27 @@ const App = () => {
     if (completedTodosLoading.state) return <div>{completedTodosLoading.message}</div>;
     if (!todosData || !completedTodosData) return <div>Nothing found</div>;
 
+    const handlePopupTransition = () => {
+        setPopupVis(v => !v);
+        setTimeout(() => setPopupVis(v => !v), 1200);
+    };
     const handleCreate = async () => {
         if (!todoText) return;
 
-        await createTodoMut();
+        const { data } = await createTodoMut();
+        handlePopupTransition();
+
+        if (data) {
+            setPopuptext("Successfully created todo");
+            setPopupVariant("success");
+        } else {
+            setPopuptext("Failed to create todo");
+            setPopupVariant("error");
+        }
     };
 
     return (
         <div className="flex justify-center flex-col h-screen items-center">
-            <button onClick={togglePopupVis}>click</button>
             <div className="flex flex-col bg-blue-700 p-2 rounded-lg ring-1 ring-black w-1/3">
                 <div className="flex justify-between p-2 items-center">
                     <input
@@ -84,9 +98,13 @@ const App = () => {
                 </div>
                 <div className="mt-4">
                     <PopupContext.Provider
-                        value={{ visible: popupVis, update: togglePopupVis }}
+                        value={{
+                            visible: popupVis,
+                            updateState: () => setPopupVis(v => !v),
+                            updateVariant: (v: TPopupVariant) => setPopupVariant(v),
+                        }}
                     >
-                        <Popup />
+                        <Popup text={popupText} variant={popupVariant} />
                         {todosData.allTodos.map((todo: ITodo) => {
                             return <Todo key={todo.id} {...todo} />;
                         })}
