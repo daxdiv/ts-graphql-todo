@@ -12,9 +12,13 @@ import {
     ICreateTodoVars,
     ICompletedTodosData,
 } from "./utils/types";
+import Popup from "./components/Popup";
+import PopupContext from "./utils/contexts";
 
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
+    const [popupVis, setPopupVis] = useState<boolean>(false);
+    const togglePopupVis = () => setPopupVis(v => !v);
     const [
         { data: todosData, error: todosError, loading: todosLoading },
         {
@@ -53,6 +57,7 @@ const App = () => {
 
     return (
         <div className="flex justify-center flex-col h-screen items-center">
+            <button onClick={togglePopupVis}>click</button>
             <div className="flex flex-col bg-blue-700 p-2 rounded-lg ring-1 ring-black w-1/3">
                 <div className="flex justify-between p-2 items-center">
                     <input
@@ -78,15 +83,20 @@ const App = () => {
                     </div>
                 </div>
                 <div className="mt-4">
-                    {todosData.allTodos.map((todo: ITodo) => {
-                        return <Todo key={todo.id} {...todo} />;
-                    })}
-                    {completedTodosData.completedTodos.length !== 0 && (
-                        <div className="w-full my-2 border-t-2 border-t-white px-2"></div>
-                    )}
-                    {completedTodosData.completedTodos.map((todo: ITodo) => {
-                        return <Todo key={todo.id} {...todo} />;
-                    })}
+                    <PopupContext.Provider
+                        value={{ visible: popupVis, update: togglePopupVis }}
+                    >
+                        <Popup />
+                        {todosData.allTodos.map((todo: ITodo) => {
+                            return <Todo key={todo.id} {...todo} />;
+                        })}
+                        {completedTodosData.completedTodos.length !== 0 && (
+                            <div className="w-full my-2 border-t-2 border-t-white px-2"></div>
+                        )}
+                        {completedTodosData.completedTodos.map((todo: ITodo) => {
+                            return <Todo key={todo.id} {...todo} />;
+                        })}
+                    </PopupContext.Provider>
                 </div>
             </div>
         </div>
