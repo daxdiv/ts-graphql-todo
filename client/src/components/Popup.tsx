@@ -19,7 +19,11 @@ const Popup = ({ text, variant }: IPopup) => {
             } ${PopupVariantStyles[variant]}`}
         >
             {text}
-            <BsCheckLg className="ml-4"></BsCheckLg>
+            {variant === "success" ? (
+                <BsCheckLg className="ml-4" />
+            ) : (
+                <ImCross className="ml-4" />
+            )}
         </div>
     );
 };
