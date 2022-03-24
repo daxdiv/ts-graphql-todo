@@ -21,6 +21,7 @@ const App = () => {
     const [popupVis, setPopupVis] = useState<boolean>(false);
     const [popupText, setPopupText] = useState<string>("");
     const [popupVariant, setPopupVariant] = useState<TPopupVariant>("error");
+    const [shouldShake, setShouldShake] = useState<boolean>(false);
     const [
         { data: todosData, error: todosError, loading: todosLoading },
         {
@@ -56,7 +57,10 @@ const App = () => {
         setTimeout(() => setPopupVis(v => !v), 1200);
     };
     const handleCreate = async () => {
-        if (!todoText) return;
+        if (!todoText) {
+            setShouldShake(true);
+            return;
+        }
 
         const { data } = await createTodoMut();
         handlePopupTransition();
@@ -81,7 +85,10 @@ const App = () => {
                         onChange={e => {
                             setTodoText(e.currentTarget.value);
                         }}
-                        className="w-3/4 bg-white rounded-lg focus:ring-white focus:ring-1 p-1 outline-none"
+                        className={`w-3/4 bg-white rounded-lg focus:ring-white focus:ring-1 p-1 outline-none ${
+                            shouldShake ? "animate-shake" : ""
+                        }`}
+                        onAnimationEnd={() => setShouldShake(false)}
                     />
                     <div className="grid grid-cols-2 gap-3">
                         <BsPlusLg
