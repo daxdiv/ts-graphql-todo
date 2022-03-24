@@ -3,8 +3,9 @@ import React from "react";
 
 const PopupContext = React.createContext({
     visible: false,
-    updateState: () => {},
     updateVariant: (v: TPopupVariant) => {},
+    updateText: (t: string) => {},
+    updateTransition: () => {},
 });
 
 export default PopupContext;

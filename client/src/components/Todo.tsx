@@ -1,13 +1,16 @@
 import { useMutation } from "@apollo/client";
+import { useContext } from "react";
 import { BsCheckLg, BsFillTrashFill } from "react-icons/bs";
 import { FaUndoAlt } from "react-icons/fa";
 import DELETE_MUT from "../mutations/delete.mutation";
 import UPDATE_MUT from "../mutations/update.mutation";
 import ALL_TODOS_QUERY from "../queries/allTodos.query";
 import COMPLETED_TODOS_QUERY from "../queries/completedTodos.query";
+import PopupContext from "../utils/contexts";
 import { IDeleteTodoVars, ITodo, IUpdateTodoVars } from "../utils/types";
 
 const Todo = ({ id, text, complete }: ITodo) => {
+    const { updateVariant, updateText, updateTransition } = useContext(PopupContext);
     const [deleteTodoMut] = useMutation<{}, IDeleteTodoVars>(DELETE_MUT, {
         variables: { id },
         refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
@@ -18,10 +21,29 @@ const Todo = ({ id, text, complete }: ITodo) => {
     });
 
     const handleDelete = async () => {
-        await deleteTodoMut();
+        const { data } = await deleteTodoMut();
+
+        updateTransition();
+        if (data) {
+            updateText("Successfully deleted todo");
+            updateVariant("success");
+        } else {
+            updateVariant("error");
+            updateText("Error deleting todo");
+        }
     };
     const handleUpdate = async () => {
-        await updateTodoMut();
+        const { data } = await updateTodoMut();
+
+        updateTransition();
+
+        if (data) {
+            updateText("Successfully updated todo");
+            updateVariant("success");
+        } else {
+            updateVariant("error");
+            updateText("Error updating todo");
+        }
     };
 
     return (

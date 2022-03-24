@@ -19,7 +19,7 @@ import PopupContext from "./utils/contexts";
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
     const [popupVis, setPopupVis] = useState<boolean>(false);
-    const [popupText, setPopuptext] = useState<string>("");
+    const [popupText, setPopupText] = useState<string>("");
     const [popupVariant, setPopupVariant] = useState<TPopupVariant>("error");
     const [
         { data: todosData, error: todosError, loading: todosLoading },
@@ -62,10 +62,10 @@ const App = () => {
         handlePopupTransition();
 
         if (data) {
-            setPopuptext("Successfully created todo");
+            setPopupText("Successfully created todo");
             setPopupVariant("success");
         } else {
-            setPopuptext("Failed to create todo");
+            setPopupText("Failed creating todo");
             setPopupVariant("error");
         }
     };
@@ -100,8 +100,9 @@ const App = () => {
                     <PopupContext.Provider
                         value={{
                             visible: popupVis,
-                            updateState: () => setPopupVis(v => !v),
                             updateVariant: (v: TPopupVariant) => setPopupVariant(v),
+                            updateText: (t: string) => setPopupText(t),
+                            updateTransition: handlePopupTransition,
                         }}
                     >
                         <Popup text={popupText} variant={popupVariant} />

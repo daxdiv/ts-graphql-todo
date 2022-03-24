@@ -10,7 +10,7 @@ enum PopupVariantStyles {
 }
 
 const Popup = ({ text, variant }: IPopup) => {
-    const { visible, updateState } = useContext(PopupContext);
+    const { visible } = useContext(PopupContext);
 
     return (
         <div
