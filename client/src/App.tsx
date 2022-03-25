@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { BsPlusLg, BsTrashFill } from "react-icons/bs";
 import Todo from "./components/Todo";
 import CREATE_MUT from "./mutations/create.mutation";
@@ -12,16 +12,44 @@ import {
     ICreateTodoVars,
     ICompletedTodosData,
     TPopupVariant,
+    IPopupReducerState,
+    IPopupReducerAction,
 } from "./utils/types";
 import Popup from "./components/Popup";
 import PopupContext from "./utils/contexts";
 
+const reducer = (
+    state: IPopupReducerState,
+    action: IPopupReducerAction
+): IPopupReducerState => {
+    switch (action.type) {
+        case "todo-action":
+            return {
+                ...state,
+                text: action.payload.text,
+                variant: action.payload.variant,
+                isVisible: true,
+            };
+        case "transition":
+            return { ...state, isVisible: !state.isVisible };
+        case "set-variant":
+            return { ...state, variant: action.payload.variant };
+        case "set-text":
+            return { ...state, text: action.payload.text };
+
+        default:
+            return state;
+    }
+};
+
 const App = () => {
     const [todoText, setTodoText] = useState<string>("");
-    const [popupVis, setPopupVis] = useState<boolean>(false);
-    const [popupText, setPopupText] = useState<string>("");
-    const [popupVariant, setPopupVariant] = useState<TPopupVariant>("error");
     const [shouldShake, setShouldShake] = useState<boolean>(false);
+    const [popupState, dispatch] = useReducer(reducer, {
+        isVisible: false,
+        text: "",
+        variant: "error",
+    });
     const [
         { data: todosData, error: todosError, loading: todosLoading },
         {
@@ -53,8 +81,10 @@ const App = () => {
     if (!todosData || !completedTodosData) return <div>Nothing found</div>;
 
     const handlePopupTransition = () => {
-        setPopupVis(v => !v);
-        setTimeout(() => setPopupVis(v => !v), 1200);
+        dispatch({ type: "transition", payload: { ...popupState } });
+        setTimeout(() => {
+            dispatch({ type: "transition", payload: { ...popupState } });
+        }, 1200);
     };
     const handleCreate = async () => {
         if (!todoText) {
@@ -66,11 +96,15 @@ const App = () => {
         handlePopupTransition();
 
         if (data) {
-            setPopupText("Successfully created todo");
-            setPopupVariant("success");
-        } else {
-            setPopupText("Failed creating todo");
-            setPopupVariant("error");
+            dispatch({
+                type: "todo-action",
+                payload: {
+                    isVisible: true,
+                    text: data ? "Successfully created todo" : "Failed to create todo",
+                    variant: "success",
+                },
+            });
+            setTodoText("");
         }
     };
 
@@ -106,13 +140,12 @@ const App = () => {
                 <div className="mt-4">
                     <PopupContext.Provider
                         value={{
-                            visible: popupVis,
-                            updateVariant: (v: TPopupVariant) => setPopupVariant(v),
-                            updateText: (t: string) => setPopupText(t),
+                            visible: popupState.isVisible,
                             updateTransition: handlePopupTransition,
+                            dispatch,
                         }}
                     >
-                        <Popup text={popupText} variant={popupVariant} />
+                        <Popup text={popupState.text} variant={popupState.variant} />
                         {todosData.allTodos.map((todo: ITodo) => {
                             return <Todo key={todo.id} {...todo} />;
                         })}

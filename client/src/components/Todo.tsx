@@ -10,7 +10,7 @@ import PopupContext from "../utils/contexts";
 import { IDeleteTodoVars, ITodo, IUpdateTodoVars } from "../utils/types";
 
 const Todo = ({ id, text, complete }: ITodo) => {
-    const { updateVariant, updateText, updateTransition } = useContext(PopupContext);
+    const { updateTransition, dispatch } = useContext(PopupContext);
     const [deleteTodoMut] = useMutation<{}, IDeleteTodoVars>(DELETE_MUT, {
         variables: { id },
         refetchQueries: [{ query: ALL_TODOS_QUERY }, { query: COMPLETED_TODOS_QUERY }],
@@ -24,26 +24,27 @@ const Todo = ({ id, text, complete }: ITodo) => {
         const { data } = await deleteTodoMut();
 
         updateTransition();
-        if (data) {
-            updateText("Successfully deleted todo");
-            updateVariant("success");
-        } else {
-            updateVariant("error");
-            updateText("Error deleting todo");
-        }
+        dispatch({
+            type: "todo-action",
+            payload: {
+                isVisible: true,
+                text: data ? "Successfully deleted todo" : "Failed to delete todo",
+                variant: "success",
+            },
+        });
     };
     const handleUpdate = async () => {
         const { data } = await updateTodoMut();
 
         updateTransition();
-
-        if (data) {
-            updateText("Successfully updated todo");
-            updateVariant("success");
-        } else {
-            updateVariant("error");
-            updateText("Error updating todo");
-        }
+        dispatch({
+            type: "todo-action",
+            payload: {
+                isVisible: true,
+                text: data ? "Successfully updated todo" : "Failed to update todo",
+                variant: "success",
+            },
+        });
     };
 
     return (

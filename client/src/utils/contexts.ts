@@ -1,11 +1,10 @@
-import { TPopupVariant } from "./types";
+import { IPopupContext, TPopupVariant } from "./types";
 import React from "react";
 
-const PopupContext = React.createContext({
+const PopupContext = React.createContext<IPopupContext>({
     visible: false,
-    updateVariant: (v: TPopupVariant) => {},
-    updateText: (t: string) => {},
     updateTransition: () => {},
+    dispatch: () => {},
 });
 
 export default PopupContext;

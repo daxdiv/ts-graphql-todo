@@ -57,3 +57,20 @@ export interface IPopup {
     text: string;
     variant: TPopupVariant;
 }
+
+export interface IPopupReducerState {
+    isVisible: boolean;
+    text: string;
+    variant: TPopupVariant;
+}
+
+export interface IPopupReducerAction {
+    type: "todo-action" | "transition" | "set-variant" | "set-text";
+    payload: IPopupReducerState;
+}
+
+export interface IPopupContext {
+    visible: boolean;
+    updateTransition: () => void;
+    dispatch: React.Dispatch<IPopupReducerAction>;
+}
