@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
-import type { UseQueriesParams, UseQueriesResult } from "../utils/types";
+import type { IUseQueriesParams, IUseQueriesResult } from "../utils/types";
 
-const useQueries = <T>(...queries: UseQueriesParams[]): UseQueriesResult<T>[] => {
+const useQueries = <T>(...queries: IUseQueriesParams[]): IUseQueriesResult<T>[] => {
     return queries.map(query => {
         const { data, loading, error } = useQuery<T>(query.type);
 

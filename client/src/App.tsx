@@ -11,7 +11,6 @@ import {
     IAllTodosData,
     ICreateTodoVars,
     ICompletedTodosData,
-    TPopupVariant,
     IPopupReducerState,
     IPopupReducerAction,
 } from "./utils/types";

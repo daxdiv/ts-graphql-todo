@@ -1,4 +1,4 @@
-import { IPopupContext, TPopupVariant } from "./types";
+import { IPopupContext } from "./types";
 import React from "react";
 
 const PopupContext = React.createContext<IPopupContext>({
