@@ -14,7 +14,7 @@ git clone https://github.com/polletto88impanato/ts-graphql-todo.git
 
 -   MySQL database is required
 
-    -   Create a .env file in `server`directory
+    -   Create a .env file in `server` directory
     -   Put there your database settings
 
         ```bash
