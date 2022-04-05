@@ -7,7 +7,7 @@ Simple TODO app in [Vite](https://vitejs.dev) with [TypeScript](https://www.type
 -   Clone this repository
 
 ```bash
-git clone https://github.com/polletto88impanato/ts-graphql-todo.git
+git clone https://github.com/daxdiv/ts-graphql-todo.git
 ```
 
 ##### Run the server
